@@ -12,9 +12,10 @@ const services = [
   ['OpenAI API','API и контент OpenAI','↗','ai']
 ];
 const grid = document.querySelector('#service-grid');
-services.forEach(([name, description, mark, category]) => {
+services.forEach(([name, description, mark, category], index) => {
   const card = document.createElement('article'); card.className = 'service-card'; card.dataset.category = category;
-  const icon = document.createElement('span'); icon.className = 'service-mark'; icon.textContent = mark; icon.setAttribute('aria-hidden','true');
+  const icon = document.createElement('span'); icon.className = 'service-mark'; icon.setAttribute('aria-hidden','true');
+  icon.style.backgroundPosition = `${(index % 5) * 25}% ${index < 5 ? 0 : 100}%`;
   const title = document.createElement('h3'); title.textContent = name;
   const copy = document.createElement('p'); copy.textContent = description;
   card.append(icon,title,copy); grid.append(card);
