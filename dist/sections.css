@@ -19,3 +19,10 @@
 /* Isolate Windows from the neighbouring sprite; optically center DNS on the tilted plaque. */
 .visual-windows,.setup-device[data-current-device=windows]{clip-path:inset(0 7% 0 7%)}
 .glass-address{left:12%;right:2%}
+/* Keep each sprite cell at its native proportions on every screen. */
+.setup-object{aspect-ratio:1}
+.setup-device[data-current-device=windows],.setup-device[data-current-device=router],.setup-device[data-current-device=phone]{background-image:none;clip-path:none}
+.setup-device:not([data-current-device=xbox])::before{content:"";position:absolute;inset:0 12.5%;background-image:url('assets/devices.png');background-size:400% 100%;background-repeat:no-repeat}
+.setup-device[data-current-device=windows]::before{background-position:33.333% 50%;clip-path:inset(0 7%)}
+.setup-device[data-current-device=router]::before{background-position:66.666% 50%}
+.setup-device[data-current-device=phone]::before{background-position:100% 50%}
