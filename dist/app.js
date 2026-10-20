@@ -48,13 +48,27 @@ const guides = {
 };
 const tabs = [...document.querySelectorAll('[data-device]')];
 function selectDevice(tab) {
-  tabs.forEach(b => {const active=b===tab;b.classList.toggle('selected',active);b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
+  tabs.forEach(b => {const active=b.dataset.device===tab.dataset.device;b.classList.toggle('selected',active);b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
   const guide=guides[tab.dataset.device];const panel=document.querySelector('#guide');
   panel.setAttribute('aria-labelledby',tab.id);panel.innerHTML=`<h3>${guide.title}</h3><ol>${guide.steps.map(step=>`<li>${step}</li>`).join('')}</ol>`;
+  document.querySelector('#setup-cards').setAttribute('aria-labelledby', 'step-tab-' + tab.dataset.device);
+  document.querySelector('.setup-device').dataset.currentDevice = tab.dataset.device;
+  const summaries = {
+    xbox: ['Открой настройки сети', 'Выбери ручную настройку DNS', 'Сохрани настройки и открой сервис'],
+    windows: ['Открой параметры сети', 'Найди назначение DNS-сервера', 'Переподключись к сети и открой сервис'],
+    router: ['Открой настройки роутера', 'Найди DNS в настройках Интернета', 'Сохрани и переподключи устройства'],
+    phone: ['Открой настройки Wi-Fi', 'Выбери свою сеть и параметры DNS', 'Переподключись к Wi-Fi и открой сервис']
+  };
+  const [title, firstCopy, thirdCopy] = summaries[tab.dataset.device];
+  document.querySelector('#step-one-title').textContent = title;
+  document.querySelector('#step-one-copy').textContent = firstCopy;
+  document.querySelector('#step-three-copy').textContent = thirdCopy;
 }
-tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectDevice(tab));tab.addEventListener('keydown',event=>{
-  let next;if(event.key==='ArrowRight')next=(index+1)%tabs.length;else if(event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=tabs.length-1;else return;
-  event.preventDefault();tabs[next].focus();selectDevice(tabs[next]);
+tabs.forEach(tab=>{tab.addEventListener('click',()=>selectDevice(tab));tab.addEventListener('keydown',event=>{
+  const group = [...tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]')];
+  const index = group.indexOf(tab);
+  let next;if(event.key==='ArrowRight')next=(index+1)%group.length;else if(event.key==='ArrowLeft')next=(index+group.length-1)%group.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=group.length-1;else return;
+  event.preventDefault();group[next].focus();selectDevice(group[next]);
 });});selectDevice(tabs[0]);
 let toastTimer;
 function toast(message){const node=document.querySelector('#toast');node.textContent=message;node.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>node.classList.remove('visible'),4000);}
