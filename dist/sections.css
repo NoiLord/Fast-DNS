@@ -26,3 +26,4 @@
 .setup-device[data-current-device=windows]::before{background-position:33.333% 50%;clip-path:inset(0 7%)}
 .setup-device[data-current-device=router]::before{background-position:66.666% 50%}
 .setup-device[data-current-device=phone]::before{background-position:100% 50%}
+footer .legal-links{display:flex;flex-wrap:wrap;gap:14px 28px;grid-column:1/-1;width:100%;font-size:12px;color:#baa5cf}footer .legal-links a:hover{color:var(--lime)}
